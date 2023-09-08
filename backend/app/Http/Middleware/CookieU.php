@@ -10,8 +10,9 @@ class CookieU extends Middleware
     /**
      * Get the path the user should be redirected to when they are not authenticated.
      */
-    protected function redirectTo(Request $request): ?string
+    protected function crearCookie()
     {
-        return $request->expectsJson() ? null : route('login');
+        $cookie = cookie('mi_cookie', 'mi_valor', 60);
+        return response('Cookie creada')->cookie($cookie);
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\PaginaController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Middleware\NewCookie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -53,8 +54,8 @@ Route::post('/authusuario', [UsuarioController::class, 'authusuario']);
 // Route::put('/pagina/update/{id}', [PaginaController::class, 'update']);
 // Route::put('/pagina/delete/{id}', [PaginaController::class, 'delete']);
 
-// Route::get('/persona', [PersonaController::class, 'index']);
-// Route::get('/persona/{id}', [PersonaController::class, 'getById']);
+Route::get('/persona', [PersonaController::class, 'index']);
+Route::get('/persona/{id}', [PersonaController::class, 'getById']);
 // Route::post('/persona/create', [PersonaController::class, 'create']);
 // Route::put('/persona/update/{id}', [PersonaController::class, 'update']);
 // Route::put('/persona/delete/{id}', [PersonaController::class, 'delete']);

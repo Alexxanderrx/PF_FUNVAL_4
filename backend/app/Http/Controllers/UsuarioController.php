@@ -7,6 +7,7 @@ use App\Models\Rol;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Str;
 
 class UsuarioController extends Controller
 {
@@ -20,7 +21,7 @@ class UsuarioController extends Controller
         if (Usuario::find($id) == null) {
             return "No existe un Usuario con el id N° " . $id;
         }
-        if (Usuario::find($id)->state == 0) {
+        if (Usuario::find($id)->habilitado == 0) {
             return "El Usuario N° " . $id . " esta desactivado.";
         }
         $usuario = Usuario::find($id);
@@ -67,20 +68,32 @@ class UsuarioController extends Controller
         return  redirect("http://localhost:5173/");
         // return  redirect("http://localhost:5173/info")->with(['id' => $newUsuario->id]);
     }
-    public function cookieU(Request $request)
-    {
-        $value = Response('Cookie creada')->cookie('mi_cookie', 'mi_valor');
-
-        return $value;
-    }
+    // public function cookieU(Request $request)
+    // {
+    //     return Response('Cookie creada')->cookie('mi_cookie', 'mi_valor');
+    // }
     public function authusuario(Request $request)
     {
-        // $usuariosAll = new Usuario();
 
         $auth = Usuario::where('usuario', $request->usuario)->where('clave', $request->clave)->get();
+        // $idU = Usuario::where('usuario', $request->usuario)->where('clave', $request->clave)->id;
+
 
         if (count($auth) == 1) {
-            return redirect("http://localhost:5173/info");
+            // return redirect("http://localhost:5173/info")->cookie('mi_cookiex', 'mi_valorx', 60);
+            // $variable = 'Hola desde Laravel';
+
+            // return $auth;
+            $auth_array = json_decode($auth, true);
+            $id = $auth_array[0]['id'];
+            // return $id;
+
+            session(['id' => $id]);
+            $idU = session('id');
+
+            // return redirect("http://localhost:5173/info")->with('variable', $id);
+            return redirect("http://localhost:5173/info?id=" . $idU);
+            // return redirect("http://localhost:5173/info");
         } else {
             return redirect("http://localhost:5173/");
         }
