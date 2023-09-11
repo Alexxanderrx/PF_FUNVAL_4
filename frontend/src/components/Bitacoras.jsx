@@ -3,14 +3,14 @@ import { Table } from "flowbite-react";
 import { useEffect, useState } from "react";
 import axios from "../api/axios";
 
-export default function Roles(props) {
+export default function Bitacoras(props) {
 
 
-    const [rol, setRol] = useState([]);
+    const [bitacora, setBitacora] = useState([]);
     const [showModal, setShowModal] = React.useState(0);
     useEffect(() => {
         axios
-            .get('http://127.0.0.1:8000/api/rol')
+            .get('http://127.0.0.1:8000/api/bitacora')
             .then((response) => {
                 setRol(response.data);
                 // console.log(response.data);
@@ -21,8 +21,6 @@ export default function Roles(props) {
             });
     }, []);
 
-    // const roles = rol;
-    // console.log(roles);
 
     return (
         <>
@@ -38,33 +36,44 @@ export default function Roles(props) {
                         <Table hoverable>
                             <Table.Head>
                                 <Table.HeadCell>
-                                    Nombre del Rol
+                                    Nombre del bitacora
+                                </Table.HeadCell>
+                                <Table.HeadCell>
+                                    Id del Usuario
+                                </Table.HeadCell>
+                                <Table.HeadCell>
+                                    Fecha
+                                </Table.HeadCell>
+                                <Table.HeadCell>
+                                    Hora
+                                </Table.HeadCell>
+                                <Table.HeadCell>
+                                    IP
+                                </Table.HeadCell>
+                                <Table.HeadCell>
+                                    SO
+                                </Table.HeadCell>
+                                <Table.HeadCell>
+                                    Navegador
+                                </Table.HeadCell>
+                                <Table.HeadCell>
+                                    Nombre de Usuario
                                 </Table.HeadCell>
                                 <Table.HeadCell>
                                     Habilitado
                                 </Table.HeadCell>
                                 <Table.HeadCell>
-                                    Fecha de Creación
-                                </Table.HeadCell>
-                                <Table.HeadCell>
-                                    Fecha de Modificación
-                                </Table.HeadCell>
-                                <Table.HeadCell>
-                                    Usuario de Creación
-                                </Table.HeadCell>
-                                <Table.HeadCell>
-                                    Usuario de Modificación
-                                </Table.HeadCell>
-                                <Table.HeadCell>
-                                    <b>ACCIONES</b>
+                                    <span className="sr-only">
+                                        Edit
+                                    </span>
                                 </Table.HeadCell>
                             </Table.Head>
                             <Table.Body className="divide-y">
-                                {rol.map((e, index) => (
+                                {bitacora.map((e, index) => (
 
                                     <Table.Row key={index} className="bg-white dark:border-gray-700 dark:bg-gray-800">
                                         <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                            {e.rol}
+                                            {e.bitacora}
                                         </Table.Cell>
                                         <Table.Cell>
 
@@ -73,7 +82,7 @@ export default function Roles(props) {
                                                 <p className="bg-red-500 text-center text-white rounded-full px-2">Desactivado</p>
                                             }
                                         </Table.Cell>
-                                        <Table.Cell>
+                                        {/* <Table.Cell>
                                             {e.fecha_creacion}
                                         </Table.Cell>
                                         <Table.Cell>
@@ -84,7 +93,7 @@ export default function Roles(props) {
                                         </Table.Cell>
                                         <Table.Cell>
                                             {e.usuario_creacion}
-                                        </Table.Cell>
+                                        </Table.Cell> */}
                                         <Table.Cell>
                                             <form id={e.id} action={"http://127.0.0.1:8000/api/rol/update/" + e.id} method="POST">
                                                 <button

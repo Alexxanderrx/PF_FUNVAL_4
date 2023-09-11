@@ -3,16 +3,16 @@ import { Table } from "flowbite-react";
 import { useEffect, useState } from "react";
 import axios from "../api/axios";
 
-export default function Roles(props) {
+export default function Enlaces(props) {
 
 
-    const [rol, setRol] = useState([]);
+    const [enlace, setEnlace] = useState([]);
     const [showModal, setShowModal] = React.useState(0);
     useEffect(() => {
         axios
-            .get('http://127.0.0.1:8000/api/rol')
+            .get('http://127.0.0.1:8000/api/enlace')
             .then((response) => {
-                setRol(response.data);
+                setEnlace(response.data);
                 // console.log(response.data);
 
             })
@@ -20,9 +20,6 @@ export default function Roles(props) {
                 console.error(error);
             });
     }, []);
-
-    // const roles = rol;
-    // console.log(roles);
 
     return (
         <>
@@ -38,7 +35,13 @@ export default function Roles(props) {
                         <Table hoverable>
                             <Table.Head>
                                 <Table.HeadCell>
-                                    Nombre del Rol
+                                    Id Pagina
+                                </Table.HeadCell>
+                                <Table.HeadCell>
+                                    Id Rol
+                                </Table.HeadCell>
+                                <Table.HeadCell>
+                                    Descripcion
                                 </Table.HeadCell>
                                 <Table.HeadCell>
                                     Habilitado
@@ -60,7 +63,7 @@ export default function Roles(props) {
                                 </Table.HeadCell>
                             </Table.Head>
                             <Table.Body className="divide-y">
-                                {rol.map((e, index) => (
+                                {enlace.map((e, index) => (
 
                                     <Table.Row key={index} className="bg-white dark:border-gray-700 dark:bg-gray-800">
                                         <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">

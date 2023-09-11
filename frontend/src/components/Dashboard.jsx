@@ -1,6 +1,7 @@
 
 export default function Dashboard() {
     return (
+
         <>
             <div className="h-16 w-11/12  flex justify-between items-center">
                 <p id="title01" className="truncate  text-xl md:text-2xl font-medium pr-4">Dashboard</p>

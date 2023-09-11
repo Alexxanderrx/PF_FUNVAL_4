@@ -8,28 +8,32 @@ import twitter from "/src/imgs/Twitter.svg";
 import axios from "../../api/axios";
 
 function Login() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const navigate = useNavigate();
+    // const [email, setEmail] = useState("");
+    // const [password, setPassword] = useState("");
+    // const navigate = useNavigate();
 
-    const handleLogin = async (event) => {
-        event.preventDefault();
-        try {
-            await axios.post('/login', { email, password });
-            setEmail("")
-            setPassword("")
-            navigate("/")
-        } catch (error) {
-            console.log(error);
-        }
-    }
+    // const handleLogin = async (event) => {
+    //     event.preventDefault();
+    //     try {
+    //         await axios.post('/api/au', { usuario: email, clave: password });
+    //         setEmail("")
+    //         setPassword("")
+    //         navigate("/dashboard")
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
 
     return (
-        <div className="w-full h-full flex border justify-center items-center">
+        <div className=" w-full h-screen flex border justify-center items-center">
             <div className=" flex flex-col justify-center items-center h-full md:h-[480px] w-screen  md:w-96 ">
                 <form
-                    className="bg-white flex-col h-full md:h-[380px] w-full md:w-96 p-4 md:p-10 border-0 md:border border-gray-400 rounded-3xl"
-                    name="formularioLogIn" onSubmit={handleLogin}>
+                    className="bg-white flex-col h-full md:h-[380px] w-full md:w-96 p-4 md:p-10 border-0 md:border border-gray-400 rounded-3xl flex justify-center "
+                    name="formularioLogIn"
+                    // onSubmit={handleLogin}
+                    action="http://localhost:8000/api/autorizacion"
+                    method="POST"
+                >
                     <p className="mb-4 font-semibold text-lg">Login</p>
                     <div>
                         <div className="relative block mb-3">
@@ -46,7 +50,12 @@ function Login() {
                             {/* Input email aqui */}
                             <input
                                 className="block bg-white w-full border border-slate-300 rounded-md py-2 pl-9 pr-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
-                                type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
+                                type="email"
+                                // value={email} 
+                                // onChange={(e) => setEmail(e.target.value)} 
+                                placeholder="Email"
+                                name="usuario"
+                                required />
                         </div>
 
                         <div className="relative block mb-3">
@@ -62,7 +71,12 @@ function Login() {
                             {/* Input password aqui */}
                             <input
                                 className="block bg-white w-full border border-slate-300 rounded-md py-2 pl-9 pr-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
-                                type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
+                                type="password"
+                                // value={password}
+                                // onChange={(e) => setPassword(e.target.value)}
+                                placeholder="Password"
+                                name="clave"
+                                required />
                         </div>
                     </div>
                     <button className="mb-5 w-full bg-blue-500 hover:bg-blue-700 text-white  py-2 px-4 rounded-lg" type="submit"

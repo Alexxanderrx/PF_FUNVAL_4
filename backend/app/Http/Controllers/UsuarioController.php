@@ -84,15 +84,15 @@ class UsuarioController extends Controller
             // $variable = 'Hola desde Laravel';
 
             // return $auth;
-            $auth_array = json_decode($auth, true);
-            $id = $auth_array[0]['id'];
-            // return $id;
+            // $auth_array = json_decode($auth, true);
+            // $id = $auth_array[0]['id'];
+            // // return $id;
 
-            session(['id' => $id]);
-            $idU = session('id');
+            // session(['id' => $id]);
+            // $idU = session('id');
 
             // return redirect("http://localhost:5173/info")->with('variable', $id);
-            return redirect("http://localhost:5173/info?id=" . $idU);
+            return redirect("http://localhost:5173/dashboard");
             // return redirect("http://localhost:5173/info");
         } else {
             return redirect("http://localhost:5173/");
