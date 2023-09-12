@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import axios from '../api/axios';
 
 export default function InfoP() {
@@ -8,28 +8,35 @@ export default function InfoP() {
     const [persona, setPersona] = useState([]);
     const [usuario, setUsuario] = useState([]);
     useEffect(() => {
-        axios
-            .get('http://127.0.0.1:8000/api/usuario/' + params.id)
-            .then((response) => {
-                setUsuario(response.data);
-                // console.log(response.data);
+        setTimeout(() => {
 
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+            axios
+                .get('http://127.0.0.1:8000/api/usuario/' + params.id)
+                .then((response) => {
+                    setUsuario(response.data);
+                    // console.log(response.data);
+
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }, 2000);
+
     }, []);
 
     useEffect(() => {
-        axios
-            .get('http://127.0.0.1:8000/api/persona/' + usuario.id_persona)
-            .then((response) => {
-                setPersona(response.data);
-                console.log(response.data);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        setTimeout(() => {
+            axios
+                .get('http://127.0.0.1:8000/api/persona/' + usuario.id_persona)
+                .then((response) => {
+                    setPersona(response.data);
+                    console.log(response.data);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }, 5000);
+
     }, [usuario]);
     return (
         <form className=" flex flex-col justify-start items-center w-full h-full" method="POST" action="">
@@ -44,25 +51,46 @@ export default function InfoP() {
                         <p className="text-xs text-gray-400 w-44 md:w-full">Some info may be visible to other people</p>
                     </div>
 
-                    <a href={"/update/" + params.id} className="bg-white hover:bg-gray-300 text-gray-500 border border-gray-400  py-2 px-8 rounded-lg" >Edit</a>
+                    <Link to={"/update/" + params.id} className="bg-white hover:bg-gray-300 text-gray-500 border border-gray-400  py-2 px-8 rounded-lg" >Edit</Link>
 
                 </div>
                 <div style={{ boxShadow: "inset -5px -5px 10px #c5c5c5" }} className=" w-full overflow-scroll overflow-x-hidden h-[70%]">
                     <div className="px-6 md:px-20 h-16 w-full flex border-b border-gray items-center md:justify-normal justify-between text-gray-400 text-sm">
                         <p className="w-2/6 h-full flex items-center">PRIMER NOMBRE</p>
-                        <input className="border-0 w-[60%] bg-transparent text-black md:text-left text-right" type="text" value={persona.primer_nombre} disabled />
+                        {persona != "" ?
+                            <p className=" text-black md:text-left text-right">{persona.primer_nombre}</p>
+                            : <div className="text-left ">
+                                <p className="animate-pulse ">.&#160;&#160;.&#160;&#160;.</p>
+                            </div>
+                        }
+
                     </div>
                     <div className="px-6 md:px-20 h-16 w-full flex border-b border-gray items-center md:justify-normal justify-between text-gray-400 text-sm">
                         <p className="w-2/6 h-full flex items-center">SEGUNDO NOMBRE</p>
-                        <input className="border-0 w-[60%] bg-transparent text-black md:text-left text-right" type="text" value={persona.segundo_nombre} disabled />
+                        {persona != "" ?
+                            <p className=" text-black md:text-left text-right">{persona.segundo_nombre} </p>
+                            : <div className="text-left ">
+                                <p className="animate-pulse ">.&#160;&#160;.&#160;&#160;.</p>
+                            </div>
+                        }
                     </div>
                     <div className="px-6 md:px-20 h-16 w-full flex border-b border-gray items-center md:justify-normal justify-between text-gray-400 text-sm">
                         <p className="w-2/6 h-full flex items-center">PRIMER APELLIDO</p>
-                        <input className="border-0 w-[60%] bg-transparent text-black md:text-left text-right" type="text" value={persona.primer_apellido} disabled />
+                        {persona != "" ?
+                            <p className=" text-black md:text-left text-right">{persona.primer_apellido}  </p>
+                            : <div className="text-left ">
+                                <p className="animate-pulse ">.&#160;&#160;.&#160;&#160;.</p>
+                            </div>
+                        }
                     </div>
                     <div className="px-6 md:px-20 h-16 w-full flex border-b border-gray items-center md:justify-normal justify-between text-gray-400 text-sm">
                         <p className="w-2/6 h-full flex items-center">SEGUNDO APELLIDO</p>
-                        <input className="border-0 w-[60%] bg-transparent text-black md:text-left text-right" type="text" value={persona.segundo_apellido} disabled />
+                        {persona != "" ?
+                            <p className=" text-black md:text-left text-right">{persona.segundo_apellido}  </p>
+                            : <div className="text-left ">
+                                <p className="animate-pulse ">.&#160;&#160;.&#160;&#160;.</p>
+                            </div>
+                        }
                     </div>
 
                 </div>

@@ -23,6 +23,8 @@ export default function Paginas(props) {
             });
     }, []);
 
+
+
     return (
         <>
 
@@ -121,7 +123,7 @@ export default function Paginas(props) {
                     ) : null}
                 </form>
 
-                <p className="text-xs md:text-base"><a href="./lobby.php" className=" text-sky-500">Home</a> / <span>{props.name}</span></p>
+                <p className="text-xs md:text-base"><span className=" text-sky-500">Home</span> / <span>{props.name}</span></p>
             </div>
             <section className=" h-[85%] flex w-11/12  justify-start items-start">
                 <div className=" w-full h-full  p-4 bg-white border">

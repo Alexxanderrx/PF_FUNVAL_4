@@ -77,7 +77,7 @@ class RolController extends Controller
             // $updateRol->usuario_modificacion = NULL;
             $updateRol->save();
             // return $updateRol;
-            return redirect("http://localhost:5173/roles/" . $id);
+            return redirect("http://localhost:5173/roles/" . $request->params);
             // return  "rol actualizado";
         } catch (Exception $e) {
             return  $e->getMessage();

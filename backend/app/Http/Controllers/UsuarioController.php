@@ -98,7 +98,7 @@ class UsuarioController extends Controller
 
             $updateUsuario->save();
 
-            return  redirect("http://localhost:5173/usuarios/" . $id);
+            return  redirect("http://localhost:5173/usuarios/" . $request->params);
         } catch (Exception $e) {
             $e->getMessage();
         }

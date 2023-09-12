@@ -7,28 +7,35 @@ export default function InfoU() {
     const [persona, setPersona] = useState([]);
 
     useEffect(() => {
-        axios
-            .get('http://127.0.0.1:8000/api/usuario/' + params.id)
-            .then((response) => {
-                setUsuario(response.data);
-                console.log(response.data);
+        setTimeout(() => {
 
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+            axios
+                .get('http://127.0.0.1:8000/api/usuario/' + params.id)
+                .then((response) => {
+                    setUsuario(response.data);
+                    console.log(response.data);
+
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }, 2000);
+
     }, []);
 
     useEffect(() => {
-        axios
-            .get('http://127.0.0.1:8000/api/persona/' + usuario.id_persona)
-            .then((response) => {
-                setPersona(response.data);
-                console.log(response.data);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        setTimeout(() => {
+
+            axios
+                .get('http://127.0.0.1:8000/api/persona/' + usuario.id_persona)
+                .then((response) => {
+                    setPersona(response.data);
+                    console.log(response.data);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }, 5000);
     }, [usuario]);
 
     return (
@@ -50,28 +57,28 @@ export default function InfoU() {
                             <p>PRIMER NOMBRE</p>
                         </div>
                         <input className="h-12  w-full  text-black border rounded-lg pl-4" type="text"
-                            placeholder={persona.primer_nombre} size="30" name="primer_nombre" required />
+                            placeholder={(persona != "") ? persona.primer_nombre : "...."} size="30" name="primer_nombre" required />
                     </div>
                     <div className="h-24 w-full flex flex-col justify-center items-start text-sm  px-8">
                         <div className="flex">
                             <p>SEGUNDO NOMBRE</p>
                         </div>
                         <input className="h-12  w-full  text-black border rounded-lg pl-4" type="text"
-                            placeholder={persona.segundo_nombre} size="30" name="segundo_nombre" required />
+                            placeholder={(persona != "") ? persona.segundo_nombre : "...."} size="30" name="segundo_nombre" required />
                     </div>
                     <div className="h-24 w-full flex flex-col justify-center items-start text-sm  px-8">
                         <div className="flex">
                             <p>PRIMER APELLIDO</p>
                         </div>
                         <input className="h-12  w-full  text-black border rounded-lg pl-4" type="text"
-                            placeholder={persona.primer_apellido} size="30" name="primer_apellido" required />
+                            placeholder={(persona != "") ? persona.primer_apellido : "...."} size="30" name="primer_apellido" required />
                     </div>
                     <div className="h-24 w-full flex flex-col justify-center items-start text-sm  px-8">
                         <div className="flex">
                             <p>SEGUNDO APELLIDO</p>
                         </div>
                         <input className="h-12  w-full  text-black border rounded-lg pl-4" type="text"
-                            placeholder={persona.segundo_apellido} size="30" name="segundo_apellido" required />
+                            placeholder={(persona != "") ? persona.segundo_apellido : "...."} size="30" name="segundo_apellido" required />
                     </div>
 
                     <div className=" h-16 w-full flex  justify-start items-center text-sm  px-8">

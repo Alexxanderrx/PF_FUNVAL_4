@@ -27,7 +27,7 @@ export default function Bitacoras(props) {
 
             <div className="h-16 w-11/12  flex justify-between items-center">
                 <p className="truncate  text-xl md:text-2xl font-medium pr-4">{props.name}</p>
-                <p className="text-xs md:text-base"><a href="/dashboard" className=" text-sky-500">Home</a> / <span>{props.name}</span></p>
+                <p className="text-xs md:text-base"><span className=" text-sky-500">Home</span> / <span>{props.name}</span></p>
             </div>
             <section className=" h-[85%] flex w-11/12  justify-start items-start">
                 <div className=" w-full h-full  p-4 bg-white border">
