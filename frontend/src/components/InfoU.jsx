@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import axios from '../api/axios';
 export default function InfoU() {
     const params = useParams();
@@ -49,7 +49,7 @@ export default function InfoU() {
                         <p className="text-lg">Change Info</p>
                         <p className="text-xs text-gray-400">Changes will be reflected to every services</p>
                     </div>
-                    <a href={"/profile/" + params.id} className="text-sky-500 pl-8  mb-2 mt-4">&#60;&#160;Back</a>
+                    <Link to={"/profile/" + params.id} className="text-sky-500 pl-8  mb-2 mt-4">&#60;&#160;Back</Link>
                 </div>
                 <div style={{ boxShadow: "inset -5px -5px 10px #c5c5c5" }} className=" w-full h-[80%] overflow-scroll overflow-x-hidden">
                     <div className="h-24 w-full flex flex-col justify-center items-start text-sm  px-8">

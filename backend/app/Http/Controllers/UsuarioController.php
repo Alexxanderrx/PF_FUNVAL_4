@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bitacora;
 use App\Models\Persona;
 use App\Models\Rol;
 use App\Models\Usuario;
@@ -59,13 +60,28 @@ class UsuarioController extends Controller
         $newUsuario->fecha_modificacion = null;
         $newUsuario->usuario_creacion = null;
         $newUsuario->usuario_modificacion = null;
-        // $idU = $newUsuario->id;
-        // $response = new Response();
-        // $response->withCookie(cookie('idUsuario', 'hola', 60));
 
         $newUsuario->save();
 
 
+        $creador = Usuario::find($id);
+
+        $newBitacora = new Bitacora();
+
+        $newBitacora->bitacora = "Create Usuario";
+        $newBitacora->id_usuario = $id;
+        $newBitacora->fecha = now();
+        $newBitacora->hora = now();
+        if (empty($_SERVER['REMOTE_ADDR'])) {
+            $newBitacora->ip = "Desconocida";
+        } else {
+            $newBitacora->ip = $_SERVER['REMOTE_ADDR'];
+        }
+        $newBitacora->so = PHP_OS;
+        $newBitacora->navegador = $_SERVER['HTTP_USER_AGENT'];
+        $newBitacora->usuario_nombre = $creador->usuario;
+        $newBitacora->habilitado = 1;
+        $newBitacora->save();
 
         return  redirect("http://localhost:5173/usuarios/" . $id);
         // return  redirect("http://localhost:5173/info")->with(['id' => $newUsuario->id]);
@@ -98,6 +114,25 @@ class UsuarioController extends Controller
 
             $updateUsuario->save();
 
+            $actualizador = Usuario::find($request->params);
+
+            $newBitacora = new Bitacora();
+
+            $newBitacora->bitacora = "Update Usuario";
+            $newBitacora->id_usuario = $request->params;
+            $newBitacora->fecha = now();
+            $newBitacora->hora = now();
+            if (empty($_SERVER['REMOTE_ADDR'])) {
+                $newBitacora->ip = "Desconocida";
+            } else {
+                $newBitacora->ip = $_SERVER['REMOTE_ADDR'];
+            }
+            $newBitacora->so = PHP_OS;
+            $newBitacora->navegador = $_SERVER['HTTP_USER_AGENT'];
+            $newBitacora->usuario_nombre = $actualizador->usuario;
+            $newBitacora->habilitado = 1;
+            $newBitacora->save();
+
             return  redirect("http://localhost:5173/usuarios/" . $request->params);
         } catch (Exception $e) {
             $e->getMessage();
@@ -108,26 +143,33 @@ class UsuarioController extends Controller
     {
 
         $auth = Usuario::where('usuario', $request->usuario)->where('clave', $request->clave)->get();
-        // $idU = Usuario::where('usuario', $request->usuario)->where('clave', $request->clave)->id;
-
 
         if (count($auth) == 1) {
-            // return redirect("http://localhost:5173/info")->cookie('mi_cookiex', 'mi_valorx', 60);
-            // $variable = 'Hola desde Laravel';
 
-            // return $auth;
             $auth_array = json_decode($auth, true);
             $id = $auth_array[0]['id'];
-            // // return $id;
+            $usuario = $auth_array[0]['usuario'];
 
-            // session(['id' => $id]);
-            // $idU = session('id');
 
-            // return redirect("http://localhost:5173/info")->with('variable', $id);
+            $newBitacora = new Bitacora();
+
+            $newBitacora->bitacora = "Login Usuario";
+            $newBitacora->id_usuario = $id;
+            $newBitacora->fecha = now();
+            $newBitacora->hora = now();
+            if (empty($_SERVER['REMOTE_ADDR'])) {
+                $newBitacora->ip = "Desconocida";
+            } else {
+                $newBitacora->ip = $_SERVER['REMOTE_ADDR'];
+            }
+            $newBitacora->so = PHP_OS;
+            $newBitacora->navegador = $_SERVER['HTTP_USER_AGENT'];
+            $newBitacora->usuario_nombre = $usuario;
+            $newBitacora->habilitado = 1;
+            $newBitacora->save();
+
+
             return redirect("http://localhost:5173/dashboard/" . $id);
-            // return redirect("http://localhost:5173/dashboard")->with('name', 1);
-            // return redirect()->route('http://localhost:5173/dashboard')->with('variable', 1);
-            // return redirect("http://localhost:5173/info");
         } else {
             return redirect("http://localhost:5173/");
         }

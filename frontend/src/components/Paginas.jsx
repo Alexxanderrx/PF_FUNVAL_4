@@ -212,6 +212,7 @@ export default function Paginas(props) {
                                         </Table.Cell>
                                         <Table.Cell>
                                             <form id={e.id} action={"http://127.0.0.1:8000/api/pagina/update/" + e.id} method="POST">
+                                                <input className="hidden" type="text" name="params" value={params.id} />
                                                 <button
                                                     className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                                     type="button"

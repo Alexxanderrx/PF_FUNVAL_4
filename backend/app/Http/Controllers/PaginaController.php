@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bitacora;
 use App\Models\Pagina;
+use App\Models\Usuario;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -47,6 +49,26 @@ class PaginaController extends Controller
             $newPagina->usuario_creacion = NULL;
             $newPagina->usuario_modificacion = NULL;
             $newPagina->save();
+
+            $creador = Usuario::find($id);
+
+            $newBitacora = new Bitacora();
+
+            $newBitacora->bitacora = "Create Pagina";
+            $newBitacora->id_usuario = $id;
+            $newBitacora->fecha = now();
+            $newBitacora->hora = now();
+            if (empty($_SERVER['REMOTE_ADDR'])) {
+                $newBitacora->ip = "Desconocida";
+            } else {
+                $newBitacora->ip = $_SERVER['REMOTE_ADDR'];
+            }
+            $newBitacora->so = PHP_OS;
+            $newBitacora->navegador = $_SERVER['HTTP_USER_AGENT'];
+            $newBitacora->usuario_nombre = $creador->usuario;
+            $newBitacora->habilitado = 1;
+            $newBitacora->save();
+
             return  redirect("http://localhost:5173/paginas/" . $id);
         } catch (Exception $e) {
             return  $e->getMessage();
@@ -71,7 +93,27 @@ class PaginaController extends Controller
             ($request->habilitado == null) ? ($updatePagina->habilitado = 0) : ($updatePagina->habilitado = $request->habilitado);
 
             $updatePagina->save();
-            return redirect("http://localhost:5173/paginas/" . $id);
+
+            $actualizador = Usuario::find($request->params);
+
+            $newBitacora = new Bitacora();
+
+            $newBitacora->bitacora = "Update Página";
+            $newBitacora->id_usuario = $request->params;
+            $newBitacora->fecha = now();
+            $newBitacora->hora = now();
+            if (empty($_SERVER['REMOTE_ADDR'])) {
+                $newBitacora->ip = "Desconocida";
+            } else {
+                $newBitacora->ip = $_SERVER['REMOTE_ADDR'];
+            }
+            $newBitacora->so = PHP_OS;
+            $newBitacora->navegador = $_SERVER['HTTP_USER_AGENT'];
+            $newBitacora->usuario_nombre = $actualizador->usuario;
+            $newBitacora->habilitado = 1;
+            $newBitacora->save();
+
+            return redirect("http://localhost:5173/paginas/" . $request->params);
             // return  "rol actualizado";
         } catch (Exception $e) {
             return  $e->getMessage();

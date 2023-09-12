@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bitacora;
 use App\Models\Rol;
+use App\Models\Usuario;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -41,6 +43,26 @@ class RolController extends Controller
             $newRol->usuario_creacion = NULL;
             $newRol->usuario_modificacion = NULL;
             $newRol->save();
+
+            $creador = Usuario::find($id);
+
+            $newBitacora = new Bitacora();
+
+            $newBitacora->bitacora = "Create Rol";
+            $newBitacora->id_usuario = $id;
+            $newBitacora->fecha = now();
+            $newBitacora->hora = now();
+            if (empty($_SERVER['REMOTE_ADDR'])) {
+                $newBitacora->ip = "Desconocida";
+            } else {
+                $newBitacora->ip = $_SERVER['REMOTE_ADDR'];
+            }
+            $newBitacora->so = PHP_OS;
+            $newBitacora->navegador = $_SERVER['HTTP_USER_AGENT'];
+            $newBitacora->usuario_nombre = $creador->usuario;
+            $newBitacora->habilitado = 1;
+            $newBitacora->save();
+
             return  redirect("http://localhost:5173/roles/" . $id);
         } catch (Exception $e) {
             return  $e->getMessage();
@@ -73,9 +95,27 @@ class RolController extends Controller
             }
 
             $updateRol->fecha_modificacion = now();
-            // $updateRol->usuario_creacion = NULL;
-            // $updateRol->usuario_modificacion = NULL;
+
             $updateRol->save();
+
+            $actualizador = Usuario::find($request->params);
+
+            $newBitacora = new Bitacora();
+
+            $newBitacora->bitacora = "Update Rol";
+            $newBitacora->id_usuario = $request->params;
+            $newBitacora->fecha = now();
+            $newBitacora->hora = now();
+            if (empty($_SERVER['REMOTE_ADDR'])) {
+                $newBitacora->ip = "Desconocida";
+            } else {
+                $newBitacora->ip = $_SERVER['REMOTE_ADDR'];
+            }
+            $newBitacora->so = PHP_OS;
+            $newBitacora->navegador = $_SERVER['HTTP_USER_AGENT'];
+            $newBitacora->usuario_nombre = $actualizador->usuario;
+            $newBitacora->habilitado = 1;
+            $newBitacora->save();
             // return $updateRol;
             return redirect("http://localhost:5173/roles/" . $request->params);
             // return  "rol actualizado";

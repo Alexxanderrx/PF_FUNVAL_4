@@ -13,8 +13,8 @@ class RolSeeder extends Seeder
      */
     public function run()
     {
-        // Rol::create(['rol' => 'ROL_ADMINISTRADOR', 'fecha_creacion' => now(), 'fecha_modificacion' => null, 'usuario_creacion' => null, 'usuario_modificacion' => null]);
-        // Rol::create(['rol' => 'ROL_AFILIADO', 'fecha_creacion' => now(), 'fecha_modificacion' => null, 'usuario_creacion' => null, 'usuario_modificacion' => null]);
-        // Rol::create(['rol' => 'ROL_RRHH', 'fecha_creacion' => now(), 'fecha_modificacion' => null, 'usuario_creacion' => null, 'usuario_modificacion' => null]);
+        Rol::create(['rol' => 'ROL_ADMINISTRADOR', 'fecha_creacion' => now(), 'fecha_modificacion' => null, 'usuario_creacion' => null, 'usuario_modificacion' => null]);
+        Rol::create(['rol' => 'ROL_AFILIADO', 'fecha_creacion' => now(), 'fecha_modificacion' => null, 'usuario_creacion' => null, 'usuario_modificacion' => null]);
+        Rol::create(['rol' => 'ROL_RRHH', 'fecha_creacion' => now(), 'fecha_modificacion' => null, 'usuario_creacion' => null, 'usuario_modificacion' => null]);
     }
 }
