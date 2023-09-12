@@ -1,11 +1,12 @@
-
+import { useParams } from 'react-router-dom';
 export default function Dashboard() {
+    // const id = useParams();
+    // console.log(id)
     return (
-
         <>
             <div className="h-16 w-11/12  flex justify-between items-center">
                 <p id="title01" className="truncate  text-xl md:text-2xl font-medium pr-4">Dashboard</p>
-                <p className="text-xs md:text-base"><a href="./lobby.php" className=" text-sky-500">Home</a> / <span id="title02">Dashboard</span></p>
+                <p className="text-xs md:text-base"><a href="/dashboard" className=" text-sky-500">Home</a> / <span id="title02">Dashboard</span></p>
             </div>
             <section id="sectionBienvenida" className="flex w-11/12  justify-start items-start">
                 <div className=" w-[540px] p-4 bg-white border">
@@ -14,6 +15,5 @@ export default function Dashboard() {
                 </div>
             </section>
         </>
-
     )
 }

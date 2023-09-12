@@ -1,14 +1,20 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, Route, Routes } from "react-router-dom";
-import Dashboard from "./Dashboard";
-import MenuBtn from "./MenuBtn";
+import React from "react";
+import { useParams } from 'react-router-dom';
+import axios from "../api/axios";
 
 export default function MenuName(props) {
     const toggleBarRef = useRef(null);
     const toggleSpinRef = useRef(null);
     const btnOpenRef = useRef(null);
     const [spin, setSpin] = useState(false);
+    const [usuario, setUsuario] = useState([]);
+    const [persona, setPersona] = useState([]);
+    const [rol, setRol] = useState([]);
 
+    const parametro = useParams();
+    console.log(parametro);
     function open() {
         toggleBarRef.current.classList.toggle("collapse");
         setSpin(!spin);
@@ -21,22 +27,71 @@ export default function MenuName(props) {
         }
     }
 
+    useEffect(() => {
+        axios
+            .get('http://127.0.0.1:8000/api/usuario/' + parametro.id)
+            .then((response) => {
+                setUsuario(response.data);
+                console.log(response.data);
+
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+        axios
+            .get('http://127.0.0.1:8000/api/rol')
+            .then((response) => {
+                setRol(response.data);
+                // console.log(response.data);
+
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }, []);
+
+    useEffect(() => {
+        axios
+            .get('http://127.0.0.1:8000/api/persona/' + usuario.id_persona)
+            .then((response) => {
+                setPersona(response.data);
+                console.log(response.data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }, [usuario]);
     return (
         <div className="bg-[#f1f3f5] h-screen w-screen flex">
             <section id="toggleMenu" className="h-full w-1/6 bg-[#30363b]">
-                <a href="/dashboard" id="toggleMenuU" className="h-16 w-full border-b flex md:justify-start justify-center md:pl-4 items-center">
-                    <div className=" h-12 w-12 rounded-full overflow-hidden">
-                        <img className="h-12 w-12" src="" alt="EmpresaLogo.jpg" />
+                <a href={"/dashboard/" + parametro.id} id="toggleMenuU" className="h-16 w-full border-b flex md:justify-start justify-center md:pl-4 items-center">
+                    <div className="border flex justify-center items-center h-12 w-12 rounded-full overflow-hidden">
+                        {/* <img className="h-12 w-12" src="" alt="EmpresaLogo.jpg" /> */}
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" className="w-8 h-8">
+                            <path d="M11.584 2.376a.75.75 0 01.832 0l9 6a.75.75 0 11-.832 1.248L12 3.901 3.416 9.624a.75.75 0 01-.832-1.248l9-6z" />
+                            <path fillRule="evenodd" d="M20.25 10.332v9.918H21a.75.75 0 010 1.5H3a.75.75 0 010-1.5h.75v-9.918a.75.75 0 01.634-.74A49.109 49.109 0 0112 9c2.59 0 5.134.202 7.616.592a.75.75 0 01.634.74zm-7.5 2.418a.75.75 0 00-1.5 0v6.75a.75.75 0 001.5 0v-6.75zm3-.75a.75.75 0 01.75.75v6.75a.75.75 0 01-1.5 0v-6.75a.75.75 0 01.75-.75zM9 12.75a.75.75 0 00-1.5 0v6.75a.75.75 0 001.5 0v-6.75z" clipRule="evenodd" />
+                            <path d="M12 7.875a1.125 1.125 0 100-2.25 1.125 1.125 0 000 2.25z" />
+                        </svg>
+
                     </div>
                     <p className="md:flex hidden text-white pl-3 text-xl">Empresa</p>
                 </a>
                 <div id="" className="md:flex hidden h-28 w-full border-b flex-col justify-around items-start text-white p-4">
-                    <p className=" text-xl">ROL</p>
-                    <p className="truncate w-full">NOMBRE</p>
+                    <p className=" text-xl">
+                        {rol.map((r) => (
+                            r.id == usuario.id_rol && r.rol
+                        ))}
+                    </p>
+                    <p className="truncate w-full">
+                        {((persona.primer_nombre == null) ? "" : persona.primer_nombre)
+                            + " " + ((persona.segundo_nombre == null) ? "" : persona.segundo_nombre)
+                            + " " + ((persona.primer_apellido == null) ? "" : persona.primer_apellido)
+                            + " " + ((persona.segundo_apellido == null) ? "" : persona.segundo_apellido)}
+                    </p>
                 </div>
                 <div className="w-full flex flex-col justify-center items-center text-white">
                     <p id="" className="p-4 md:flex hidden">MENU </p>
-                    <Link to="/dashboard" id="" className="w-full flex md:justify-start justify-center items-center p-4 hover:bg-[#3d4449]">
+                    <Link to={"/dashboard/" + parametro.id} id="" className="w-full flex md:justify-start justify-center items-center p-4 hover:bg-[#3d4449]">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
                             <path fillRule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clipRule="evenodd" />
                         </svg>
@@ -44,7 +99,7 @@ export default function MenuName(props) {
                         <p id="" className="md:flex hidden pl-2">Dashboard</p>
                     </Link>
 
-                    <Link to="/roles" id="" className=" w-full flex md:justify-start justify-center items-center p-4 hover:bg-[#3d4449]">
+                    <Link to={"/roles/" + parametro.id} id="" className=" w-full flex md:justify-start justify-center items-center p-4 hover:bg-[#3d4449]">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
                             <path d="M11.7 2.805a.75.75 0 01.6 0A60.65 60.65 0 0122.83 8.72a.75.75 0 01-.231 1.337 49.949 49.949 0 00-9.902 3.912l-.003.002-.34.18a.75.75 0 01-.707 0A50.009 50.009 0 007.5 12.174v-.224c0-.131.067-.248.172-.311a54.614 54.614 0 014.653-2.52.75.75 0 00-.65-1.352 56.129 56.129 0 00-4.78 2.589 1.858 1.858 0 00-.859 1.228 49.803 49.803 0 00-4.634-1.527.75.75 0 01-.231-1.337A60.653 60.653 0 0111.7 2.805z" />
                             <path d="M13.06 15.473a48.45 48.45 0 017.666-3.282c.134 1.414.22 2.843.255 4.285a.75.75 0 01-.46.71 47.878 47.878 0 00-8.105 4.342.75.75 0 01-.832 0 47.877 47.877 0 00-8.104-4.342.75.75 0 01-.461-.71c.035-1.442.121-2.87.255-4.286A48.4 48.4 0 016 13.18v1.27a1.5 1.5 0 00-.14 2.508c-.09.38-.222.753-.397 1.11.452.213.901.434 1.346.661a6.729 6.729 0 00.551-1.608 1.5 1.5 0 00.14-2.67v-.645a48.549 48.549 0 013.44 1.668 2.25 2.25 0 002.12 0z" />
@@ -52,7 +107,7 @@ export default function MenuName(props) {
                         </svg>
                         <p className="md:flex hidden pl-2">Roles</p>
                     </Link>
-                    <Link to="/usuarios" id="" className=" w-full flex md:justify-start justify-center items-center p-4 hover:bg-[#3d4449]">
+                    <Link to={"/usuarios/" + parametro.id} id="" className=" w-full flex md:justify-start justify-center items-center p-4 hover:bg-[#3d4449]">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
                             <path d="M11.7 2.805a.75.75 0 01.6 0A60.65 60.65 0 0122.83 8.72a.75.75 0 01-.231 1.337 49.949 49.949 0 00-9.902 3.912l-.003.002-.34.18a.75.75 0 01-.707 0A50.009 50.009 0 007.5 12.174v-.224c0-.131.067-.248.172-.311a54.614 54.614 0 014.653-2.52.75.75 0 00-.65-1.352 56.129 56.129 0 00-4.78 2.589 1.858 1.858 0 00-.859 1.228 49.803 49.803 0 00-4.634-1.527.75.75 0 01-.231-1.337A60.653 60.653 0 0111.7 2.805z" />
                             <path d="M13.06 15.473a48.45 48.45 0 017.666-3.282c.134 1.414.22 2.843.255 4.285a.75.75 0 01-.46.71 47.878 47.878 0 00-8.105 4.342.75.75 0 01-.832 0 47.877 47.877 0 00-8.104-4.342.75.75 0 01-.461-.71c.035-1.442.121-2.87.255-4.286A48.4 48.4 0 016 13.18v1.27a1.5 1.5 0 00-.14 2.508c-.09.38-.222.753-.397 1.11.452.213.901.434 1.346.661a6.729 6.729 0 00.551-1.608 1.5 1.5 0 00.14-2.67v-.645a48.549 48.549 0 013.44 1.668 2.25 2.25 0 002.12 0z" />
@@ -60,7 +115,7 @@ export default function MenuName(props) {
                         </svg>
                         <p className="md:flex hidden pl-2">Usuarios</p>
                     </Link>
-                    <Link to="/bitacoras" id="" className=" w-full flex md:justify-start justify-center items-center p-4 hover:bg-[#3d4449]">
+                    <Link to={"/bitacoras/" + parametro.id} id="" className=" w-full flex md:justify-start justify-center items-center p-4 hover:bg-[#3d4449]">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
                             <path d="M11.7 2.805a.75.75 0 01.6 0A60.65 60.65 0 0122.83 8.72a.75.75 0 01-.231 1.337 49.949 49.949 0 00-9.902 3.912l-.003.002-.34.18a.75.75 0 01-.707 0A50.009 50.009 0 007.5 12.174v-.224c0-.131.067-.248.172-.311a54.614 54.614 0 014.653-2.52.75.75 0 00-.65-1.352 56.129 56.129 0 00-4.78 2.589 1.858 1.858 0 00-.859 1.228 49.803 49.803 0 00-4.634-1.527.75.75 0 01-.231-1.337A60.653 60.653 0 0111.7 2.805z" />
                             <path d="M13.06 15.473a48.45 48.45 0 017.666-3.282c.134 1.414.22 2.843.255 4.285a.75.75 0 01-.46.71 47.878 47.878 0 00-8.105 4.342.75.75 0 01-.832 0 47.877 47.877 0 00-8.104-4.342.75.75 0 01-.461-.71c.035-1.442.121-2.87.255-4.286A48.4 48.4 0 016 13.18v1.27a1.5 1.5 0 00-.14 2.508c-.09.38-.222.753-.397 1.11.452.213.901.434 1.346.661a6.729 6.729 0 00.551-1.608 1.5 1.5 0 00.14-2.67v-.645a48.549 48.549 0 013.44 1.668 2.25 2.25 0 002.12 0z" />
@@ -68,13 +123,21 @@ export default function MenuName(props) {
                         </svg>
                         <p className="md:flex hidden pl-2">Bitácoras</p>
                     </Link>
-                    <Link to="/enlaces" id="" className=" w-full flex md:justify-start justify-center items-center p-4 hover:bg-[#3d4449]">
+                    <Link to={"/enlaces/" + parametro.id} id="" className=" w-full flex md:justify-start justify-center items-center p-4 hover:bg-[#3d4449]">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
                             <path d="M11.7 2.805a.75.75 0 01.6 0A60.65 60.65 0 0122.83 8.72a.75.75 0 01-.231 1.337 49.949 49.949 0 00-9.902 3.912l-.003.002-.34.18a.75.75 0 01-.707 0A50.009 50.009 0 007.5 12.174v-.224c0-.131.067-.248.172-.311a54.614 54.614 0 014.653-2.52.75.75 0 00-.65-1.352 56.129 56.129 0 00-4.78 2.589 1.858 1.858 0 00-.859 1.228 49.803 49.803 0 00-4.634-1.527.75.75 0 01-.231-1.337A60.653 60.653 0 0111.7 2.805z" />
                             <path d="M13.06 15.473a48.45 48.45 0 017.666-3.282c.134 1.414.22 2.843.255 4.285a.75.75 0 01-.46.71 47.878 47.878 0 00-8.105 4.342.75.75 0 01-.832 0 47.877 47.877 0 00-8.104-4.342.75.75 0 01-.461-.71c.035-1.442.121-2.87.255-4.286A48.4 48.4 0 016 13.18v1.27a1.5 1.5 0 00-.14 2.508c-.09.38-.222.753-.397 1.11.452.213.901.434 1.346.661a6.729 6.729 0 00.551-1.608 1.5 1.5 0 00.14-2.67v-.645a48.549 48.549 0 013.44 1.668 2.25 2.25 0 002.12 0z" />
                             <path d="M4.462 19.462c.42-.419.753-.89 1-1.394.453.213.902.434 1.347.661a6.743 6.743 0 01-1.286 1.794.75.75 0 11-1.06-1.06z" />
                         </svg>
                         <p className="md:flex hidden pl-2">Enlaces</p>
+                    </Link>
+                    <Link to={"/paginas/" + parametro.id} id="" className=" w-full flex md:justify-start justify-center items-center p-4 hover:bg-[#3d4449]">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                            <path d="M11.7 2.805a.75.75 0 01.6 0A60.65 60.65 0 0122.83 8.72a.75.75 0 01-.231 1.337 49.949 49.949 0 00-9.902 3.912l-.003.002-.34.18a.75.75 0 01-.707 0A50.009 50.009 0 007.5 12.174v-.224c0-.131.067-.248.172-.311a54.614 54.614 0 014.653-2.52.75.75 0 00-.65-1.352 56.129 56.129 0 00-4.78 2.589 1.858 1.858 0 00-.859 1.228 49.803 49.803 0 00-4.634-1.527.75.75 0 01-.231-1.337A60.653 60.653 0 0111.7 2.805z" />
+                            <path d="M13.06 15.473a48.45 48.45 0 017.666-3.282c.134 1.414.22 2.843.255 4.285a.75.75 0 01-.46.71 47.878 47.878 0 00-8.105 4.342.75.75 0 01-.832 0 47.877 47.877 0 00-8.104-4.342.75.75 0 01-.461-.71c.035-1.442.121-2.87.255-4.286A48.4 48.4 0 016 13.18v1.27a1.5 1.5 0 00-.14 2.508c-.09.38-.222.753-.397 1.11.452.213.901.434 1.346.661a6.729 6.729 0 00.551-1.608 1.5 1.5 0 00.14-2.67v-.645a48.549 48.549 0 013.44 1.668 2.25 2.25 0 002.12 0z" />
+                            <path d="M4.462 19.462c.42-.419.753-.89 1-1.394.453.213.902.434 1.347.661a6.743 6.743 0 01-1.286 1.794.75.75 0 11-1.06-1.06z" />
+                        </svg>
+                        <p className="md:flex hidden pl-2">Páginas</p>
                     </Link>
                 </div>
             </section>
@@ -91,17 +154,20 @@ export default function MenuName(props) {
                         </div>
                         <div id="open" ref={btnOpenRef} onClick={open} className="flex h-full md:w-48 w-40 justify-end items-center px-4 hover:bg-[#f2f2f2]">
                             <p className="pr-2 w-full text-center truncate">
-                                NOMBRE
+                                {((persona.primer_nombre == null) ? "" : persona.primer_nombre)
+                                    + " " + ((persona.segundo_nombre == null) ? "" : persona.segundo_nombre)
+                                    + " " + ((persona.primer_apellido == null) ? "" : persona.primer_apellido)
+                                    + " " + ((persona.segundo_apellido == null) ? "" : persona.segundo_apellido)}
                             </p>
                             <svg id="spin" style={{ transitionDuration: "500ms" }} ref={toggleSpinRef} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                             </svg>
 
                         </div>
-                        <ul id="toggle" ref={toggleBarRef} className="flex flex-col justify-center items-center py-4  md:w-48 w-40 border rounded-b-xl bg-white absolute right-0 md:top-16 top-[63px] collapse z-10">
+                        <ul id="toggle" ref={toggleBarRef} className="flex flex-col justify-center items-center py-4  md:w-48 w-40 border rounded-b-xl bg-white absolute right-0 md:top-[10.3%] top-[63px] collapse z-10">
 
                             <div className=" w-11/12 border-b border-gray">
-                                <a href="/profile" className="hover:bg-gray-200 w-full flex justify-start items-center rounded-2xl px-4">
+                                <a href={"/profile/" + parametro.id} className="hover:bg-gray-200 w-full flex justify-start items-center rounded-2xl px-4">
                                     <svg className="md:w-6 md:h-6 w-4 h-4 text-gray-500 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 20 20">
                                         <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z" />
                                     </svg>

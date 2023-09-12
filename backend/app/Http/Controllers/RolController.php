@@ -25,19 +25,23 @@ class RolController extends Controller
         $rol = Rol::find($id);
         return $rol;
     }
-    public function create(Request $request)
+    public function create($id, Request $request)
     {
         try {
             $newRol = new Rol();
 
             $newRol->rol = $request->rol;
-            $newRol->habilitado = $request->habilitado;
+            if ($request->habilitado == null) {
+                $newRol->habilitado = 0;
+            } else {
+                $newRol->habilitado = $request->habilitado;
+            }
             $newRol->fecha_creacion = now();
             $newRol->fecha_modificacion = NULL;
             $newRol->usuario_creacion = NULL;
             $newRol->usuario_modificacion = NULL;
             $newRol->save();
-            return  "rol creador";
+            return  redirect("http://localhost:5173/roles/" . $id);
         } catch (Exception $e) {
             return  $e->getMessage();
         }
@@ -73,7 +77,7 @@ class RolController extends Controller
             // $updateRol->usuario_modificacion = NULL;
             $updateRol->save();
             // return $updateRol;
-            return redirect("http://localhost:5173/roles");
+            return redirect("http://localhost:5173/roles/" . $id);
             // return  "rol actualizado";
         } catch (Exception $e) {
             return  $e->getMessage();

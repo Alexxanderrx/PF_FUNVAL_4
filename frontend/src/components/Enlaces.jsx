@@ -26,12 +26,12 @@ export default function Enlaces(props) {
 
             <div className="h-16 w-11/12  flex justify-between items-center">
                 <p className="truncate  text-xl md:text-2xl font-medium pr-4">{props.name}</p>
-                <p className="text-xs md:text-base"><a href="./lobby.php" className=" text-sky-500">Home</a> / <span>{props.name}</span></p>
+                <p className="text-xs md:text-base"><a href="/dashboard" className=" text-sky-500">Home</a> / <span>{props.name}</span></p>
             </div>
-            <section className="flex w-11/12  justify-start items-start">
-                <div className=" w-full h-full p-4 bg-white border">
+            <section className=" h-[85%] flex w-11/12  justify-start items-start">
+                <div className=" w-full h-full  p-4 bg-white border">
 
-                    <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+                    <div className="relative  h-full overflow-auto shadow-md sm:rounded-lg">
                         <Table hoverable>
                             <Table.Head>
                                 <Table.HeadCell>
